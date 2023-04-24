@@ -40,11 +40,22 @@ public class Checker {
             double amountByYearReport = amountOfProfitForYear.get(month);
             double amountByMonthReport = amountOfProfitForMonth.get(month);
             if (amountByYearReport != amountByMonthReport) {
-                System.out.println("Сумма в " + month + " месяце годового отчета, " +
-                        "не соответствует сумме затрат в месячном отчете");
+                System.out.println("Сумма доходов в " + month + " месяце годового отчета, " +
+                        "не соответствует сумме доходов в месячном отчете");
                 check = false;
             }
         }
+
+         for (Integer month : amountOfLosesForYear.keySet()) { // добавлена проверка затрат
+             double amountByYearReport = amountOfLosesForYear.get(month);
+             double amountByMonthReport = amountOfLosesForMonth.get(month);
+             if (amountByYearReport != amountByMonthReport) {
+                 System.out.println("Сумма расходов в " + month + " месяце годового отчета, " +
+                         "не соответствует сумме затрат в месячном отчете");
+                 check = false;
+             }
+         }
+
         if(check) {
             System.out.println("Данные в отчетах совпадают, можно расслабится :)");
         }

@@ -1,14 +1,11 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class YearManager {
     public ArrayList<ReportForYear> profitsAndLosesForYear = new ArrayList<>();
 
-    public YearManager(String path) {
-        String reportYear = readFileContentsOrNull(path);
+    public void loadFile(String path) {
+        String reportYear = FileReader.readFileContentsOrNull(path);
         String[] lines = reportYear.split("\r?\n"); // "/r /n"
         for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
@@ -19,16 +16,6 @@ public class YearManager {
 
             ReportForYear reportForYear = new ReportForYear(month, amount, isExpense);
             profitsAndLosesForYear.add(reportForYear);
-        }
-    }
-
-    public String readFileContentsOrNull(String path) {
-        try {
-            return Files.readString(Path.of(path));
-        } catch (IOException e) {
-            System.out.println("Невозможно прочитать файл с месячным отчётом. " +
-                    "Возможно файл не находится в нужной директории.");
-            return null;
         }
     }
 

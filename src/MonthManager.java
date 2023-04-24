@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,7 +5,7 @@ public class MonthManager {
     public ArrayList<ReportForMonth> profitsAndLosesForMonth = new ArrayList<>();
 
     public void loadFile(int month, String path) {
-        String reportMonth = readFileContentsOrNull(path);
+        String reportMonth = FileReader.readFileContentsOrNull(path);
         String[] lines = reportMonth.split("\r?\n");
         for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
@@ -23,18 +20,8 @@ public class MonthManager {
         }
     }
 
-    public String readFileContentsOrNull(String path) {
-        try {
-            return Files.readString(Path.of(path));
-        } catch (IOException e) {
-            System.out.println("Невозможно прочитать файл с месячным отчётом. " +
-                    "Возможно файл не находится в нужной директории.");
-            return null;
-        }
-    }
-
     public String getTopProfitItemOfEachMonth() {
-        HashMap<Integer, HashMap<String, Double>> BestItemsForMonth = new HashMap<>();
+        HashMap<Integer, HashMap<String, Double>> bestItemsForMonth = new HashMap<>();
         String bestItem = null;
         double maxValueOfBestItem = 0.0;
 
@@ -42,17 +29,17 @@ public class MonthManager {
             if (reportForMonth.isExpense) {
                 continue;
             }
-            if (!BestItemsForMonth.containsKey(reportForMonth.month)) {
-                BestItemsForMonth.put(reportForMonth.month, new HashMap<>());
+            if (!bestItemsForMonth.containsKey(reportForMonth.month)) {
+                bestItemsForMonth.put(reportForMonth.month, new HashMap<>());
             }
-            HashMap<String, Double> itemsByAmount = BestItemsForMonth.get(reportForMonth.month);
+            HashMap<String, Double> itemsByAmount = bestItemsForMonth.get(reportForMonth.month);
             itemsByAmount.put(reportForMonth.itemName,
                     itemsByAmount.getOrDefault(reportForMonth.itemName, 0.0)
                             + (reportForMonth.quantity * reportForMonth.sumOfOne));
         }
 
-        for (Integer month : BestItemsForMonth.keySet()) {
-            HashMap<String, Double> itemsByAmount = BestItemsForMonth.get(month);
+        for (Integer month : bestItemsForMonth.keySet()) {
+            HashMap<String, Double> itemsByAmount = bestItemsForMonth.get(month);
             for (String Item : itemsByAmount.keySet()) {
                 double itemNameAmount = itemsByAmount.get(Item);
                 if (itemNameAmount > maxValueOfBestItem) {
