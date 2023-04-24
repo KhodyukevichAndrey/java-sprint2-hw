@@ -18,6 +18,7 @@ public class Main {
                     for (int i = 1; i <= 3; i++) {
                         String path = "resources/m.20210" + i + ".csv";
                         if(!isExist(path)) {
+                            monthManager.profitsAndLosesForMonth.clear();
                             System.out.println("Невозможно прочитать файл с отчетом. " +
                                     "Возможно файл не находится в нужной директории.");
                             break;
